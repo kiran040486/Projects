@@ -25,8 +25,11 @@ public class Server implements Runnable {
 		while(true){
 			Socket client = null;
 			try{
+				client = socket.accept();
+				//TODO: do the book keeping here. store in a list or something
+				Runnable connectionHandler = new ConnectionHandler(client);
+				new Thread(connectionHandler).start();
 				
-				//all ugly stuff here
 				
 			}catch(Exception ex){
 				ex.printStackTrace();
