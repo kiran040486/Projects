@@ -92,20 +92,14 @@ public class Echoer {
 			if (INFO.equalsIgnoreCase(line)) {
 				response = info();
 			} else if (line.startsWith(SENDTO)) {
-				client = new Client();
-				if (params.length == 4) {
-					client.sendUdp(params[1], Integer.valueOf(params[2]),
-							params[3]);
-				} else {
-					response = UNKNOWN_COMMAND;
-				}
+				response = sendTo(params);
 			} else if (line.startsWith(SEND)) {
-				
-
+				send(params);
 			} else if (line.startsWith(CONNECT)) {
+				connect(params);
 
 			} else if (line.startsWith(DISCONNECT)) {
-
+				disconnect(params);
 			} else if (SHOW.equalsIgnoreCase(line)) {
 				response = show();
 			} else {
@@ -155,66 +149,100 @@ public class Echoer {
 
 		return details.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param params
 	 * @return
 	 */
-	public static String send(String[] params){
-		if(params.length<3){
+	public static String send(String[] params) {
+		if (params.length < 3) {
 			return UNKNOWN_COMMAND;
 		}
-		
-		int connectionId = Integer.valueOf(params[1]); //followed by send
+
+		int connectionId = Integer.valueOf(params[1]); // followed by send
 		StringBuffer message = new StringBuffer();
-		for(int i=2;i<params.length;i++){
+		for (int i = 1; i < params.length; i++) {
 			message.append(params[i] + " ");
 		}
-		
-		//this connection must be active
-		//iterate through all and find the connection with that id
-		for(Connection connection: ServerConnections.activeConnection){
-			if(connection.connectionId==connectionId){
-				return connection.handler.send(message.toString()); //this should take care
+
+		// this connection must be active
+		// iterate through all and find the connection with that id
+		for (Connection connection : ServerConnections.activeConnection) {
+			if (connection.connectionId == connectionId) {
+				return connection.handler.send(message.toString()); // this
+																	// should
+																	// take care
 			}
 		}
-		
+
 		return UNKNOWN_COMMAND + " connection not active/found";
 	}
-	
+
 	/**
 	 * 
 	 * @param params
 	 * @return
 	 */
-	public static String disconnect(String[] params){
-		if(params.length==2){
-			int connectionId = Integer.valueOf(params[1]); //followed by disconnect
-			for(Connection connection: ServerConnections.activeConnection){
-				if(connection.connectionId==connectionId){
-					return connection.handler.disconnect(); //this should take care
+	public static String disconnect(String[] params) {
+		if (params.length == 2) {
+			int connectionId = Integer.valueOf(params[1]); // followed by
+															// disconnect
+			Connection connectToDelete = null;
+			for (Connection connection : ServerConnections.activeConnection) {
+				if (connection.connectionId == connectionId) {
+					connection.handler.disconnect(); // this should take
+															// care
+					//remove from active list
+					connectToDelete = connection;
+					break;
 				}
 			}
 			
+			if(connectToDelete!=null){
+				ServerConnections.activeConnection.remove(connectToDelete);
+				//connectToDelete = null;
+				return "Disconnected from " + connectToDelete.ip;
+			}
+
 		}
-		
+
 		return UNKNOWN_COMMAND;
 	}
-	
-	public static String connect(String[] params){
-		if(params.length==3){
+
+	/**
+	 * connect command
+	 * @param params
+	 * @return
+	 */
+	public static String connect(String[] params) {
+		if (params.length == 3) {
 			String ip = params[1];
 			int port = Integer.valueOf(params[2]);
 			Client client = new Client();
-			
-			
-			return null;
+			return client.connect(ip, port);
 		}
-		
-		
+
 		return UNKNOWN_COMMAND;
 	}
 	
+	public static String sendTo(String[] params){
+		if (params.length < 4) {
+			return UNKNOWN_COMMAND;
+		}
+
+		String ip = params[1]; 
+		int port = Integer.valueOf(params[2]);
+		
+		StringBuffer message = new StringBuffer();
+		for (int i = 2; i < params.length; i++) {
+			message.append(params[i] + " ");
+		}
+
+		Client client = new Client();
+		client.sendUdp(ip, port, message.toString());
+
+		return "sent UDP message";
+	}
 
 }

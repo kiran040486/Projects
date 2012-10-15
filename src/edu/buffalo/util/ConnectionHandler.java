@@ -24,13 +24,21 @@ public class ConnectionHandler implements Runnable {
 		// do the work with socket here
 		if (socket != null) {
 			try {
-				ObjectInputStream inpstr = new ObjectInputStream(
-						socket.getInputStream());
-				String req = (String) inpstr.readObject(); // input if any
+				while (true) {
+					ObjectInputStream inpstr = new ObjectInputStream(
+							socket.getInputStream());
+					String req = (String) inpstr.readObject(); // input if any
 
-				// send response if seeking one
+					System.out.println("-------------------------------");
+					System.out.println("echoing " + req);
+					System.out.println("from: IP ="
+							+ socket.getInetAddress().getHostAddress());
+					System.out.println("type: tcp");
 
-				// remove from active connections list
+					// send response if seeking one
+
+					// remove from active connections list
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -40,7 +48,7 @@ public class ConnectionHandler implements Runnable {
 	}
 
 	/**
-	 * 
+	 * sends a tcp message
 	 * @param message
 	 */
 	public String send(String message) {
@@ -49,6 +57,9 @@ public class ConnectionHandler implements Runnable {
 
 				ObjectOutputStream os = new ObjectOutputStream(
 						socket.getOutputStream());
+				System.out.println("echoing " + message);
+				System.out.println("to: IP = " + socket.getInetAddress().getHostAddress());
+				System.out.println("type = tcp");
 				os.writeObject(message);
 				os.flush();
 				os.close();
@@ -67,18 +78,19 @@ public class ConnectionHandler implements Runnable {
 	 * 
 	 * @return
 	 */
-	public String disconnect() {
+	public void disconnect() {
 		if (this.socket.isConnected()) {
 
 			try {
 				this.socket.close();
+				//return 
 
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
 
-		return null;
+		//return null;
 	}
 
 }

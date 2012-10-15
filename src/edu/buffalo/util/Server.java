@@ -29,8 +29,10 @@ public class Server implements Runnable {
 			Socket client = null;
 			try{
 				client = socket.accept();
+				System.out.println("got Conn. request from " + client.getInetAddress().getHostAddress());
 				//TODO: do the book keeping here. store in a list or something
 				
+				/**
 				Connection connection = new Connection();
 				connection.localPort = client.getLocalPort();
 				connection.remotePort = client.getPort();
@@ -39,12 +41,12 @@ public class Server implements Runnable {
 				connection.connectionId = ServerConnections.connectionCounter++;
 				
 				ServerConnections.activeConnection.add(connection);
-				
+				*/
 				
 				Runnable connectionHandler = new ConnectionHandler(client);
-				new Thread(connectionHandler).start();
+				new Thread(connectionHandler).start(); //will keep listening for anything sent to it
 				
-				connection.handler = (ConnectionHandler)connectionHandler;
+				//connection.handler = (ConnectionHandler)connectionHandler;
 				
 			}catch(Exception ex){
 				ex.printStackTrace();
