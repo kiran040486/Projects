@@ -4,23 +4,28 @@ import java.util.Scanner;
 
 import edu.buffalo.util.Listener;
 import edu.buffalo.util.Server;
+import edu.buffalo.util.ServerConnections;
 
 public class Echoer {
+	
+	public static String INFO = "info";
 
 	/**
 	 * Main entry point for args
 	 */
 	public static void main(String[] args) {
 		int tcp = 8989; // Default value
-		int udp;
+		//int udp;
 
 		String[] inputs = args;
 		if (inputs.length == 2) {
 			//System.out.println("tcp port:" + inputs[0]);
 			//System.out.println("udp port:" + inputs[1]);
+			ServerConnections.TCP_PORT = Integer.valueOf(inputs[0]);
+			ServerConnections.UDP_PORT = Integer.valueOf(inputs[1]);
 
 			// start the server
-			startServer(tcp);
+			startServer(ServerConnections.TCP_PORT);
 
 			// listen for commands
 			System.out.println("------------------------------------------");
@@ -50,7 +55,7 @@ public class Echoer {
 			System.out.println("---Started server at port:" + tcp + "----");
 		} catch (Exception ex) {
 			ex.printStackTrace(); // error creating server hence quit
-			return;
+			System.exit(1);
 		}
 	}
 	
@@ -69,14 +74,33 @@ public class Echoer {
 			if ("quit".equalsIgnoreCase(line)) {
 				break;
 			}
+			
+			if(INFO.equalsIgnoreCase(line)){
+				response = info();
+			}else{
+				response = listen.doWork(line);
+			}
 
-			response = listen.doWork(line);
-			System.out.println("\t" + response);
+			
+			System.out.println("" + response);
 
 			// take in next input
 			System.out.print(" >>");
 			in = new Scanner(System.in);
 		}
+	}
+	
+	/**
+	 * returns info command output
+	 * @return
+	 */
+	public static String info(){
+		StringBuffer info = new StringBuffer();
+		info.append("IP Address     | Host Name     | UDP Port    | TCP Port\n");
+		info.append("-------------------------------------------------------\n");
+		info.append(ServerConnections.IP_ADDRESS + "  |  " + ServerConnections.HOST_NAME + "  |  " + ServerConnections.UDP_PORT + "  |  " + ServerConnections.TCP_PORT);
+		
+		return info.toString();
 	}
 
 }

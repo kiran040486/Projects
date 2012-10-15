@@ -1,6 +1,7 @@
 package edu.buffalo.util;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,6 +18,8 @@ public class Server implements Runnable {
 	
 	public Server(int port)throws IOException{
 		this.socket = ServerSocketFactory.getDefault().createServerSocket(port);
+		ServerConnections.IP_ADDRESS = InetAddress.getLocalHost().getHostAddress();
+		ServerConnections.HOST_NAME = InetAddress.getLocalHost().getHostName();
 	}
 	
 
@@ -27,6 +30,17 @@ public class Server implements Runnable {
 			try{
 				client = socket.accept();
 				//TODO: do the book keeping here. store in a list or something
+				
+				Connection connection = new Connection();
+				connection.localPort = client.getLocalPort();
+				connection.remotePort = client.getPort();
+				connection.ip = client.getInetAddress().getHostAddress();
+				connection.hostname = client.getInetAddress().getHostName();
+				connection.connectionId = ServerConnections.connectionCounter++;
+				
+				ServerConnections.activeConnection.add(connection);
+				
+				
 				Runnable connectionHandler = new ConnectionHandler(client);
 				new Thread(connectionHandler).start();
 				

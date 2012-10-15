@@ -14,7 +14,7 @@ public class Client {
 		this.host = host;
 	}
 	
-	public void send(String text, int port){
+	public void sendTcp(String text, int port){
 		String response = null;
 		try{
 			
@@ -45,6 +45,14 @@ public class Client {
 			System.out.println("RESPONSE:" + response);
 			
 		}
+	}
+	
+	public void sendUdp(String ipAddress, int udpPort, String message){
+		
+		
+		
+		
+		
 	}
 
 }
