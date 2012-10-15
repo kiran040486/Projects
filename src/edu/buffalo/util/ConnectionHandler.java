@@ -24,20 +24,25 @@ public class ConnectionHandler implements Runnable {
 		// do the work with socket here
 		if (socket != null) {
 			try {
-				
-				while (true) {
-					ObjectInputStream inpstr = new ObjectInputStream(
-							socket.getInputStream());
-					String req = (String) inpstr.readObject(); // input if any
 
-					System.out.println("-------------------------------");
-					System.out.println("echoing " + req);
-					System.out.println("from: IP ="
-							+ socket.getInetAddress().getHostAddress());
-					System.out.println("type: tcp");
+				while (true) {
+					try {
+						ObjectInputStream inpstr = new ObjectInputStream(
+								socket.getInputStream());
+						String req = (String) inpstr.readObject(); // input if
+																	// any
+
+						System.out.println("-------------------------------");
+						System.out.println("echoing " + req);
+						System.out.println("from: IP ="
+								+ socket.getInetAddress().getHostAddress());
+						System.out.println("type: tcp");
+					} catch (Exception ex) {
+						break; // exit if there is an exception
+					}
 
 					// send response if seeking one
-					//inpstr.close();
+					// inpstr.close();
 
 					// remove from active connections list
 				}
@@ -51,6 +56,7 @@ public class ConnectionHandler implements Runnable {
 
 	/**
 	 * sends a tcp message
+	 * 
 	 * @param message
 	 */
 	public String send(String message) {
@@ -60,11 +66,12 @@ public class ConnectionHandler implements Runnable {
 				ObjectOutputStream os = new ObjectOutputStream(
 						socket.getOutputStream());
 				System.out.println("echoing " + message);
-				System.out.println("to: IP = " + socket.getInetAddress().getHostAddress());
+				System.out.println("to: IP = "
+						+ socket.getInetAddress().getHostAddress());
 				System.out.println("type = tcp");
 				os.writeObject(message);
-				//os.flush();
-				//os.close();
+				// os.flush();
+				// os.close();
 				return "message sent";
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -85,14 +92,14 @@ public class ConnectionHandler implements Runnable {
 
 			try {
 				this.socket.close();
-				//return 
+				// return
 
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
 
-		//return null;
+		// return null;
 	}
 
 }
