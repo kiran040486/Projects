@@ -7,6 +7,7 @@ import edu.buffalo.util.Connection;
 import edu.buffalo.util.Listener;
 import edu.buffalo.util.Server;
 import edu.buffalo.util.ServerConnections;
+import edu.buffalo.util.UDPServer;
 
 public class Echoer {
 
@@ -61,11 +62,28 @@ public class Echoer {
 			Server server = new Server(tcp);
 			Thread thread = new Thread(server);
 			thread.start();
-			System.out.println("---Started server at port:" + tcp + "----");
+			
 		} catch (Exception ex) {
-			ex.printStackTrace(); // error creating server hence quit
+			//ex.printStackTrace(); // error creating server hence quit
+			System.out.println("--ERROR creating server at port:" + tcp + "----");
 			System.exit(1);
 		}
+		System.out.println("---Started server at port:" + tcp + "----");
+	}
+	
+	public static void startUDPServer(int port) {
+		System.out.println("---Starting UDP server at port:" + port + "----");
+		try {
+			UDPServer server = new UDPServer(port);
+			Thread thread = new Thread(server);
+			thread.start();
+			} catch (Exception ex) {
+			//ex.printStackTrace(); // error creating server hence quit
+			System.out.println("--ERROR creating UDP server at port:" + port + "----");
+			System.exit(1);
+		}
+			System.out.println("---Started UDP server at port:" + port + "----");
+			
 	}
 
 	/**
