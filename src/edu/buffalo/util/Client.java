@@ -68,8 +68,7 @@ public class Client {
 	public void sendUdp(String ipAddress, int port, String message) {
 
 		try {
-			InetAddress address = InetAddress
-					.getByAddress(ipAddress.getBytes());
+			InetAddress address = InetAddress.getByName(ipAddress);
 			DatagramSocket socket = new DatagramSocket(port);
 			DatagramPacket packet = new DatagramPacket(message.getBytes(),
 					message.length(), address, port);
