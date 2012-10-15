@@ -94,12 +94,12 @@ public class Echoer {
 			} else if (line.startsWith(SENDTO)) {
 				response = sendTo(params);
 			} else if (line.startsWith(SEND)) {
-				send(params);
+				response = send(params);
 			} else if (line.startsWith(CONNECT)) {
-				connect(params);
+				response = connect(params);
 
 			} else if (line.startsWith(DISCONNECT)) {
-				disconnect(params);
+				response = disconnect(params);
 			} else if (SHOW.equalsIgnoreCase(line)) {
 				response = show();
 			} else {
