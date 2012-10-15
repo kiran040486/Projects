@@ -35,6 +35,7 @@ public class Echoer {
 
 			// start the server
 			startServer(ServerConnections.TCP_PORT);
+			startUDPServer(ServerConnections.UDP_PORT);
 
 			// listen for commands
 			System.out.println("------------------------------------------");
