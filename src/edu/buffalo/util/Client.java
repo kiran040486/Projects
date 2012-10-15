@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client {
@@ -12,6 +15,10 @@ public class Client {
 	
 	public Client(String host){
 		this.host = host;
+	}
+	
+	public Client(){
+		
 	}
 	
 	public void sendTcp(String text, int port){
@@ -47,11 +54,26 @@ public class Client {
 		}
 	}
 	
-	public void sendUdp(String ipAddress, int udpPort, String message){
+	/**
+	 * sends a udp message at given address
+	 * @param ipAddress
+	 * @param port
+	 * @param message
+	 */
+	public void sendUdp(String ipAddress, int port, String message){
 		
+		try{
+		InetAddress address = InetAddress.getByAddress(ipAddress.getBytes());
+		DatagramSocket socket = new DatagramSocket(port);
+		DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(),address, port);
+		socket.send(packet);
+		socket.close();
 		
-		
-		
+		}catch(Exception ex){
+			
+			ex.printStackTrace();
+			//TODO print meaningful stuff
+		}
 		
 	}
 

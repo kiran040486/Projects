@@ -44,6 +44,7 @@ public class Server implements Runnable {
 				Runnable connectionHandler = new ConnectionHandler(client);
 				new Thread(connectionHandler).start();
 				
+				connection.handler = (ConnectionHandler)connectionHandler;
 				
 			}catch(Exception ex){
 				ex.printStackTrace();
@@ -55,7 +56,9 @@ public class Server implements Runnable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		String input = "send 10.20.390.0 hello how are you doing";
+		String[] params = input.split(" ");
+		System.out.println(params.length);
 
 	}
 

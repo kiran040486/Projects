@@ -11,6 +11,7 @@ public class Connection {
 	public String hostname;
 	public int localPort;
 	public int remotePort;
+	public ConnectionHandler handler;
 	
 	public Connection(){
 		
@@ -25,6 +26,16 @@ public class Connection {
 		this.localPort = localPort;
 		this.remotePort = remotePort;
 	}
+
+	public ConnectionHandler getHandler() {
+		return handler;
+	}
+
+	public void setHandler(ConnectionHandler handler) {
+		this.handler = handler;
+	}
+	
+	
 	
 	
 
