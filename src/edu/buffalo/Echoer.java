@@ -80,6 +80,7 @@ public class Echoer {
 		Client client = null;
 
 		while ((line = in.nextLine()).length() > 0) {
+			try{
 			client = null; // for garbage collection if previous have been
 							// allocated
 
@@ -111,6 +112,9 @@ public class Echoer {
 			// take in next input
 			System.out.print(" >>");
 			in = new Scanner(System.in);
+			}catch(Exception ex){
+				System.out.println("Some Exception!!");
+			}
 		}
 	}
 
