@@ -37,7 +37,7 @@ public class ConnectionHandler implements Runnable {
 					System.out.println("type: tcp");
 
 					// send response if seeking one
-					inpstr.close();
+					//inpstr.close();
 
 					// remove from active connections list
 				}
@@ -63,7 +63,7 @@ public class ConnectionHandler implements Runnable {
 				System.out.println("to: IP = " + socket.getInetAddress().getHostAddress());
 				System.out.println("type = tcp");
 				os.writeObject(message);
-				os.flush();
+				//os.flush();
 				//os.close();
 				return "message sent";
 			} catch (Exception ex) {

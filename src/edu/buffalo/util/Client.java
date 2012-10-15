@@ -21,6 +21,11 @@ public class Client {
 
 	}
 
+	/**
+	 * 
+	 * @param text
+	 * @param port
+	 */
 	public void sendTcp(String text, int port) {
 		String response = null;
 		try {
@@ -101,12 +106,14 @@ public class Client {
 			new Thread(connectionHandler).start();
 			
 			connection.handler = (ConnectionHandler)connectionHandler;
+			
+			return "connected to " + connection.ip;
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 
-		return null;
+		return "failed to connect";
 	}
 
 }

@@ -144,8 +144,8 @@ public class Echoer {
 	 */
 	public static String show() {
 		StringBuffer details = new StringBuffer();
-		details.append("Conn. ID    |      IP      |   hostname     | local port     | remote");
-		details.append("-----------------------------------------------------------------------");
+		details.append("Conn. ID    |      IP      |   hostname     | local port     | remote\n");
+		details.append("-----------------------------------------------------------------------\n");
 		for (Connection connection : ServerConnections.activeConnection) {
 			details.append(connection.connectionId + " | " + connection.ip
 					+ " | " + connection.hostname + " | "
