@@ -90,7 +90,9 @@ public class Client {
 	public String connect(String ip, int port) {
 
 		try {
+			
 			this.socket = new Socket(ip, port);
+			
 			
 			// socket.setSoTimeout(500);
 			Connection connection = new Connection();
