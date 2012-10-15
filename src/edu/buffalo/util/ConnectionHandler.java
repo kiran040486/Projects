@@ -24,9 +24,9 @@ public class ConnectionHandler implements Runnable {
 		// do the work with socket here
 		if (socket != null) {
 			try {
+				ObjectInputStream inpstr = new ObjectInputStream(
+						socket.getInputStream());
 				while (true) {
-					ObjectInputStream inpstr = new ObjectInputStream(
-							socket.getInputStream());
 					String req = (String) inpstr.readObject(); // input if any
 
 					System.out.println("-------------------------------");
@@ -36,6 +36,7 @@ public class ConnectionHandler implements Runnable {
 					System.out.println("type: tcp");
 
 					// send response if seeking one
+					//inpstr.close();
 
 					// remove from active connections list
 				}
@@ -62,7 +63,7 @@ public class ConnectionHandler implements Runnable {
 				System.out.println("type = tcp");
 				os.writeObject(message);
 				os.flush();
-				os.close();
+				//os.close();
 				return "message sent";
 			} catch (Exception ex) {
 				ex.printStackTrace();

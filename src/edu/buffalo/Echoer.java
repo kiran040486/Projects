@@ -116,6 +116,8 @@ public class Echoer {
 				System.out.println("Some Exception!!");
 			}
 		}
+		
+		System.exit(1);
 	}
 
 	/**
